@@ -19,7 +19,7 @@ argument-hint: <project-description>
 
 ## 実行ステップ
 1. **プロジェクト名の取得**: ワークスペースのルートフォルダ名をプロジェクト名として使用
-2. **ディレクトリ作成**: `.cursor/[ルートフォルダ名]/`
+2. **ディレクトリ作成**: `.cursor/[ルートフォルダ名]/` と `.cursor/[ルートフォルダ名]/artifacts/`
 3. **テンプレートを使用してファイルを初期化**:
    - `.cursor/templates/specs/init.json` を読み込み
    - `.cursor/templates/specs/requirements-init.md` を読み込み
