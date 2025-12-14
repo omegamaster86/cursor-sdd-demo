@@ -26,6 +26,9 @@ argument-hint: <feature-name:$1> [-y:$2] [--sequential:$3]
 - `.cursor/$1/spec.json`、`requirements.md`、`design.md`
 - `.cursor/$1/tasks.md`（存在する場合、マージモード用）
 - `.cursor/rules/frontend.md`（フロントエンド実装制約）
+- `.cursor/rules/artifacts-generation.md`（成果物の安全な初期作成ルール）
+- `.cursor/$1/artifacts/feature-list.md` / `.cursor/$1/artifacts/data-model.md` / `.cursor/$1/artifacts/table-definition.md` を（存在すれば）読み込み
+- 欠けている場合はテンプレから **init 作成（上書き禁止）** してから参照してよい
 
 **承認の検証**:
 - `-y` フラグが提供された場合（$2 == "-y"）: spec.json で要件と設計を自動承認
@@ -39,6 +42,7 @@ argument-hint: <feature-name:$1> [-y:$2] [--sequential:$3]
 
 読み込むファイルパターン:
 - .cursor/$1/*.{json,md}
+- .cursor/$1/artifacts/*.md
 - .cursor/rules/tasks-generation.md
 - .cursor/rules/tasks-parallel-analysis.md（シーケンシャルモードが false の場合のみ含める）
 - .cursor/templates/specs/tasks.md
