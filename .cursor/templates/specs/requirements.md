@@ -24,3 +24,21 @@
 2. [イベント]かつ[条件]の場合、[システム]は[レスポンス/アクション]を行う
 
 <!-- 追加の要件は同じパターンに従う -->
+
+## 成果物（推奨）
+このフェーズの出力を **設計の一次ソース** に落とし込むため、要件ドラフトが出た時点で以下を作成/更新する。
+
+※ 自動初期作成（上書き禁止）のルールは `.cursor/rules/artifacts-generation.md` を参照。
+
+- `.cursor/<feature>/artifacts/feature-list.md`（MVP/Phase と UI/API/Batch の一覧）
+
+テンプレート:
+- `.cursor/templates/artifacts/create-feature-list.md`
+
+---
+
+## 変更履歴
+
+| 日付 | バージョン | 変更者 | 変更内容 |
+| ---- | ---------- | ------ | -------- |
+| {{DATE}} | v1.0 | {{AUTHOR}} | 初版作成 |
