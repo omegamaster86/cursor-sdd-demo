@@ -28,6 +28,8 @@ argument-hint: <feature-name:$1> [-y:$2]
 - `.cursor/rules/design-principles.md` から設計原則
 - `.cursor/templates/specs/research.md` から発見ログ構造
 - **`package.json`（プロジェクトルートに存在する場合）**: 既存の依存関係とバージョンを把握
+- `.cursor/rules/artifacts-generation.md`（成果物の安全な初期作成ルール）を読み込み
+  - `.cursor/templates/artifacts/create-data-model.md` / `.cursor/templates/artifacts/create-table-definition.md` を読み込み
 - `.cursor/rules/frontend.md`（存在する場合）からフロントエンド設計原則
 
 **要件承認の検証**:
