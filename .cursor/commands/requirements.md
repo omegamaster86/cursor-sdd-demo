@@ -49,7 +49,7 @@ requirements.md のプロジェクト説明に基づいて、機能 **$1** の�
 ## 成果物（artifacts）の自動作成
 
 `/requirements` 実行時に、`.cursor/rules/artifacts-generation.md` を読み込み、
-`feature-list.md` を（無ければ）テンプレから作成する（**上書き禁止**）。
+`.cursor/$1/artifacts/feature-list.md` を（無ければ）テンプレから作成する（**上書き禁止**）。
 
 - テンプレ: `.cursor/templates/artifacts/create-feature-list.md`
 
