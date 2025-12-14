@@ -45,6 +45,17 @@ requirements.md のプロジェクト説明に基づいて、機能 **$1** の�
 - EARS文の適切な主語を選択（ソフトウェアにはシステム/サービス名）
 - 最初に初期バージョンを生成し、その後ユーザーフィードバックで反復（事前の連続質問なし）
 - requirements.md の要件見出しには先頭に数値IDのみを含めること（例: "Requirement 1"、"1."、"2 Feature ..."）、"Requirement A" のようなアルファベットIDは使用しない
+
+## 成果物（artifacts）の自動作成
+
+`/requirements` 実行時に、`.cursor/rules/artifacts-generation.md` を読み込み、
+`feature-list.md` を（無ければ）テンプレから作成する（**上書き禁止**）。
+
+- テンプレ: `.cursor/templates/artifacts/create-feature-list.md`
+
+### 出力への追記
+- 作成/スキップした成果物ファイルの一覧を、requirements 出力サマリーに含める。
+
 </instructions>
 
 ## ツールガイダンス
