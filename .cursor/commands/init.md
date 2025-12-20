@@ -18,16 +18,21 @@ argument-hint: <project-description>
 ワークスペースのルートフォルダ名をプロジェクト名として使用し、仕様構造を初期化する。
 
 ## 実行ステップ
-1. **プロジェクト名の取得**: ワークスペースのルートフォルダ名をプロジェクト名として使用
-2. **ディレクトリ作成**: `.cursor/[ルートフォルダ名]/` と `.cursor/[ルートフォルダ名]/artifacts/`
-3. **テンプレートを使用してファイルを初期化**:
-   - `.cursor/templates/specs/init.json` を読み込み
-   - `.cursor/templates/specs/requirements-init.md` を読み込み
-   - プレースホルダーを置換:
-     - `{{FEATURE_NAME}}` → ルートフォルダ名（プロジェクト名）
-     - `{{TIMESTAMP}}` → 現在の ISO 8601 タイムスタンプ
-     - `{{PROJECT_DESCRIPTION}}` → $ARGUMENTS
-   - `spec.json` と `requirements.md` を `.cursor/[ルートフォルダ名]/` に書き込み
+
+### ステップ1: プロジェクト名の取得
+ワークスペースのルートフォルダ名をプロジェクト名として使用する。
+
+### ステップ2: ディレクトリ作成
+`.cursor/[ルートフォルダ名]/` と `.cursor/[ルートフォルダ名]/artifacts/` を作成する。
+
+### ステップ3: テンプレートを使用してファイルを初期化
+- `.cursor/templates/specs/init.json` を読み込み
+- `.cursor/templates/specs/requirements-init.md` を読み込み
+- プレースホルダーを置換:
+  - `{{FEATURE_NAME}}` → ルートフォルダ名（プロジェクト名）
+  - `{{TIMESTAMP}}` → 現在の ISO 8601 タイムスタンプ
+  - `{{PROJECT_DESCRIPTION}}` → $ARGUMENTS
+- `spec.json` と `requirements.md` を `.cursor/[ルートフォルダ名]/` に書き込み
 
 ## 重要な制約
 - この段階で requirements/design/tasks を生成しない

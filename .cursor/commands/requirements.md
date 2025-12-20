@@ -20,24 +20,24 @@ requirements.md のプロジェクト説明に基づいて、機能 **$1** の�
 
 ## 実行ステップ
 
-1. **コンテキストの読み込み**:
-   - `.cursor/$1/spec.json` から言語とメタデータを読み込み
-   - `.cursor/$1/requirements.md` からプロジェクト説明を読み込み
+### ステップ1: コンテキストの読み込み
+- `.cursor/$1/spec.json` から言語とメタデータを読み込み
+- `.cursor/$1/requirements.md` からプロジェクト説明を読み込み
 
-2. **ガイドラインの読み込み**:
-   - `.cursor/rules/ears-format.md` から EARS 構文ルールを読み込み
-   - `.cursor/templates/specs/requirements.md` からドキュメント構造を読み込み
+### ステップ2: ガイドラインの読み込み
+- `.cursor/rules/ears-format.md` から EARS 構文ルールを読み込み
+- `.cursor/templates/specs/requirements.md` からドキュメント構造を読み込み
 
-3. **要件の生成**:
-   - プロジェクト説明に基づいて初期要件を作成
-   - 関連機能を論理的な要件領域にグループ化
-   - すべての受け入れ基準に EARS フォーマットを適用
-   - spec.json で指定された言語を使用
+### ステップ3: 要件の生成
+- プロジェクト説明に基づいて初期要件を作成
+- 関連機能を論理的な要件領域にグループ化
+- すべての受け入れ基準に EARS フォーマットを適用
+- spec.json で指定された言語を使用
 
-4. **メタデータの更新**:
-   - `phase: "requirements-generated"` を設定
-   - `approvals.requirements.generated: true` を設定
-   - `updated_at` タイムスタンプを更新
+### ステップ4: メタデータの更新
+- `phase: "requirements-generated"` を設定
+- `approvals.requirements.generated: true` を設定
+- `updated_at` タイムスタンプを更新
 
 ## 重要な制約
 - 何を（WHAT）にフォーカスし、どのように（HOW）は含めない（実装詳細なし）
