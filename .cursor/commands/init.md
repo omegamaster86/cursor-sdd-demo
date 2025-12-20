@@ -30,7 +30,7 @@ argument-hint: <project-description>
 - `.cursor/templates/specs/requirements-init.md` を読み込み
 - プレースホルダーを置換:
   - `{{FEATURE_NAME}}` → ルートフォルダ名（プロジェクト名）
-  - `{{TIMESTAMP}}` → 現在の ISO 8601 タイムスタンプ
+  - `{{TIMESTAMP}}` → 現在の日付（YYYY/MM/DD 形式）
   - `{{PROJECT_DESCRIPTION}}` → $ARGUMENTS
 - `spec.json` と `requirements.md` を `.cursor/[ルートフォルダ名]/` に書き込み
 
