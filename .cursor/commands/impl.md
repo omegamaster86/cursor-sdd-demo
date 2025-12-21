@@ -24,6 +24,7 @@ argument-hint: <feature-name:$1> [task-numbers:$2]
 
 **必要なすべてのコンテキストを読み込み**:
 - `.cursor/$1/spec.json`、`requirements.md`、`design.md`、`tasks.md`
+- `.cursor/rules/implementation.md` から実装ルール（必須）
 - `.cursor/rules/frontend.md`（存在する場合）からフロントエンド実装ルール
 
 **承認の検証**:
