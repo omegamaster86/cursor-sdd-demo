@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "artifacts:init": "node scripts/generate-artifacts.mjs --init",
+    "artifacts:overwrite": "node scripts/generate-artifacts.mjs --overwrite"
   },
   "dependencies": {
     "next": "16.0.10",
