@@ -7,13 +7,13 @@
 ## タスク一覧
 
 - [ ] 1. プロジェクト基盤セットアップ
-- [ ] 1.1 Prisma と PostgreSQL の設定
+- [x] 1.1 Prisma と PostgreSQL の設定
   - Prisma をインストールし、初期設定を行う
   - PostgreSQL 接続設定を環境変数で管理
   - 開発用データベースを準備
   - _要件: 全般_
 
-- [ ] 1.2 データベーススキーマを定義
+- [x] 1.2 データベーススキーマを定義
   - Survey, Question, QuestionOption テーブルを作成
   - Response, Answer テーブルを作成
   - Notice テーブルを作成

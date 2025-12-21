@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
   output   = "../app/generated/prisma"
@@ -11,4 +8,110 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+// ===========================================
+// アンケート管理ドメイン
+// ===========================================
+
+/// アンケート（t_survey）
+model Survey {
+  id          BigInt   @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  description String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  questions Question[]
+  responses Response[]
+
+  @@map("t_survey")
+}
+
+/// 質問タイプ
+enum QuestionType {
+  SINGLE_CHOICE
+  MULTIPLE_CHOICE
+  FREE_TEXT
+}
+
+/// 質問（t_question）
+model Question {
+  id           BigInt       @id @default(autoincrement())
+  surveyId     BigInt       @map("survey_id")
+  questionType QuestionType @map("question_type")
+  questionText String       @map("question_text") @db.Text
+  isRequired   Boolean      @default(false) @map("is_required")
+  sortOrder    Int          @default(0) @map("sort_order")
+  createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime     @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  survey  Survey           @relation(fields: [surveyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  options QuestionOption[]
+  answers Answer[]
+
+  @@index([surveyId], name: "idx_question_survey")
+  @@map("t_question")
+}
+
+/// 質問選択肢（t_question_option）
+model QuestionOption {
+  id         BigInt   @id @default(autoincrement())
+  questionId BigInt   @map("question_id")
+  optionText String   @map("option_text") @db.Text
+  sortOrder  Int      @default(0) @map("sort_order")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("t_question_option")
+}
+
+/// 回答（t_response）- 1回の回答セッション
+model Response {
+  id             BigInt   @id @default(autoincrement())
+  surveyId       BigInt   @map("survey_id")
+  respondentName String?  @map("respondent_name") @db.VarChar(100)
+  submittedAt    DateTime @default(now()) @map("submitted_at") @db.Timestamptz
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  survey  Survey   @relation(fields: [surveyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  answers Answer[]
+
+  @@index([surveyId], name: "idx_response_survey")
+  @@map("t_response")
+}
+
+/// 個別回答（t_answer）
+model Answer {
+  id               BigInt   @id @default(autoincrement())
+  responseId       BigInt   @map("response_id")
+  questionId       BigInt   @map("question_id")
+  selectedOptionId BigInt?  @map("selected_option_id")
+  answerText       String?  @map("answer_text") @db.Text
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  response Response @relation(fields: [responseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("t_answer")
+}
+
+// ===========================================
+// お知らせ管理ドメイン
+// ===========================================
+
+/// お知らせ（t_notice）
+model Notice {
+  id          BigInt    @id @default(autoincrement())
+  title       String    @db.VarChar(255)
+  content     String    @db.Text
+  isPublished Boolean   @default(false) @map("is_published")
+  publishedAt DateTime? @map("published_at") @db.Timestamptz
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([isPublished, publishedAt], name: "idx_notice_published")
+  @@map("t_notice")
 }
