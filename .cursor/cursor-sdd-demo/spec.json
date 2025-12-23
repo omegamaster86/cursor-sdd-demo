@@ -1,0 +1,27 @@
+{
+  "project_name": "cursor-sdd-demo",
+  "feature_name": "cursor-sdd-demo",
+  "feature_key": "cursor-sdd-demo",
+  "feature_path": ".cursor/cursor-sdd-demo",
+  "mode": "project",
+  "project_summary": "問題演習用の管理画面",
+  "created_at": "2024/12/23",
+  "updated_at": "2024/12/23",
+  "language": "ja",
+  "phase": "tasks-generated",
+  "approvals": {
+    "requirements": {
+      "generated": true,
+      "approved": true
+    },
+    "design": {
+      "generated": true,
+      "approved": true
+    },
+    "tasks": {
+      "generated": true,
+      "approved": false
+    }
+  },
+  "ready_for_implementation": false
+}
