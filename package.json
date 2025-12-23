@@ -1,5 +1,5 @@
 {
-  "name": "cursor-sdd-demo",
+  "name": "demo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,22 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
-    "format": "biome format --write",
-    "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev",
-    "db:push": "prisma db push",
-    "db:studio": "prisma studio",
-    "artifacts:init": "node scripts/generate-artifacts.mjs --init",
-    "artifacts:overwrite": "node scripts/generate-artifacts.mjs --overwrite"
+    "format": "biome format --write"
   },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.2.0",
-    "@prisma/client": "^7.2.0",
-    "next": "16.0.10",
-    "pg": "^8.16.3",
-    "prisma": "^7.2.0",
-    "react": "19.2.1",
-    "react-dom": "19.2.1"
+    "next": "16.1.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
@@ -30,7 +20,6 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "dotenv": "^17.2.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
