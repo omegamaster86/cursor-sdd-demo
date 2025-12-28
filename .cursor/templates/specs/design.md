@@ -126,14 +126,9 @@
 **契約**: Service [ ] / API [ ] / Event [ ] / Batch [ ] / State [ ]  ← 該当するもののみチェック。
 
 ##### サービスインターフェース
-```typescript
-interface [ComponentName]Service {
-  methodName(input: InputType): Result<OutputType, ErrorType>;
-}
-```
-- 事前条件:
-- 事後条件:
-- 不変条件:
+- 提供するメソッドと責任を自然言語で記述
+- 事前条件 / 事後条件 / 不変条件を箇条書きで明記
+- 型定義はコードで実装時に定義（Prisma等のORMを使用する場合は自動生成される型を活用）
 
 ##### API契約
 | メソッド | エンドポイント | リクエスト | レスポンス | エラー |
