@@ -1,7 +1,8 @@
 ---
 description: Next.js (App Router) と React 19 を使用したフロントエンド開発タスクに適用。app/を編集する際には必ず参照して。
 ---
-以下は、Next.js(App Router) 15系および React 19 系の公式ドキュメントに準拠した実装ガイドです。
+
+以下は、Next.js(App Router) 16系および React 19 系の公式ドキュメントに準拠した実装ガイドです。
 このルールを使用する際に「フロントエンドのルールを確認しました」と表示してください。
 
 ## Code Generation
@@ -14,79 +15,82 @@ description: Next.js (App Router) と React 19 を使用したフロントエン
 - Next.js: https://nextjs.org/docs
 - React 19: https://react.dev
 - TypeScript: https://www.typescriptlang.org/docs/
-- tailwindcss:https://tailwindcss.com/docs/
+- tailwindcss: https://tailwindcss.com/docs/
 
 ## 1. プロジェクト基本方針
 - App Router を前提とし、Server Components を既定とする。
-- データ取得はサーバー優先（`fetch` と Next.js のキャッシュ戦略を活用）。
+- Next.js 16 の **Cache Components** モードを有効化し、Partial Prerendering (PPR) を活用する。
+- データ取得はサーバー優先。`use cache` ディレクティブと `cacheLife`、`cacheTag` を活用した最新のキャッシュ戦略を推奨する。
+- `params`, `searchParams`, `cookies()`, `headers()` などの API はすべて **Promise** (非同期) として扱う。
 - UI層（表示）とロジック層（データ取得・処理）を明確に分離し、コンポーネントをシンプルに保つ。
 - UI はクライアント側でインタラクションが必要な箇所のみ `'use client'` を付ける。
-- ディレクトリ名は機能や役割が明確に分かる命名（例:`NewFeatureListItemPage`, `Header`）
-- ファイル名はパスカルケースかつ処理や役割が分かる命名にしてください。 (button.tsx, UseThemeColor.ts)
+- ファイル名はキャメルケースかつ機能や役割が明確に分かる命名（例:`newFeatureListItemPage`, `header`）
+- ファイル名はパスカルケースかつ処理や役割が分かる命名にしてください。 (Button.tsx, UseThemeColor.ts)
 - コンポーネント名はパスカルケースを使用します。（例: `HeaderBreadcrumb`, `NewFeatureDropdown`）
 
 ## 2. ディレクトリ構成
-- ヘッダー関連のコンポーネント（例: `Header.tsx`, `HeaderBreadcrumb.tsx`
+- ヘッダー関連のコンポーネント（例: `Header.tsx`, `HeaderBreadcrumb.tsx`）
 - モーダル関連のコンポーネント（例: `ArchiveNewFeatureModal.tsx`）
-
 
 ## 3. ルーティングとメタデータ
 - Next.js App Router を使用する。React Router は使用しない。
 - 動的セグメント `[id]`, キャッチオール `[...slug]` を使用。
+- `params` は `await params` で取得する。
 - SSG が必要な場合は `generateStaticParams` を実装。
-- `Link` を優先。クライアント側で制御が必要な場合のみ `'use client'` + `useRouter()` を使用（`push`, `replace`, `prefetch`）。
-- メタは `generateMetadata`（動的）または `layout.tsx` の `export const metadata`（静的）。
-- サーバーサイドの遷移は必要に応じて`redirect()`・`notFound()` を使用する。
+- `Link` を優先。クライアント側で制御が必要な場合のみ `'use client'` + `useRouter()` を使用。
+- メタデータは `generateMetadata` (動的) または `export const metadata` (静的)。`generateMetadata` 内の `params` も Promise として扱う。
+- サーバーサイドの遷移は必要に応じて `redirect()` ・ `notFound()` を使用する。
 
-## 4. データ取得・キャッシュ
-- 既定はサーバーで `fetch`。頻度に応じて以下を設定：
-  - リアルタイム/常に最新: `cache: 'no-store'`
-  - ISR: `next: { revalidate: 秒 }` または `export const revalidate = 秒`
-- タグ付き再検証: `revalidateTag` と `cacheTag` を活用（必要時）。
+## 4. データ取得・キャッシュ (Next.js 16 / Cache Components)
+- **`use cache` ディレクティブ**: 関数やコンポーネントの戻り値をキャッシュするために使用する。
+- **`cacheLife`**: キャッシュの有効期限（'seconds', 'minutes', 'hours', 'days', 'weeks', 'max' またはカスタム設定）を指定する。従来の `revalidate` セグメント構成に代わるもの。
+- **`cacheTag` / `revalidateTag` / `updateTag`**: オンデマンド再検証に使用する。
+- **PPR (Partial Prerendering)**: 動的な要素（`cookies()` や `searchParams` に依存する部分）は `<Suspense>` で囲み、静的なシェルを即座に返せるようにする。
+- 従来の `fetch(url, { cache: 'no-store' })` などのオプションよりも、`use cache` による粒度の高い制御を優先する。
 
 ## 5. クライアントコンポーネントの指針
-- フォーム、イベント、アニメーションなどのみ `'use client'` を付与。
+- フォーム、イベント、アニメーションなどのインタラクティブな要素のみ `'use client'` を付与。
+- React 19 の新機能（`useActionState`, `useOptimistic` 等）を積極的に活用する。
 - ルーター操作は `useRouter()`、リンクは `Link` を優先。
-- 例外遷移/404: `redirect()` / `notFound()` を使用（`next/navigation`）。
 
 ## 6. 状態管理
 - ローカル: `useState`, `useReducer`。
-- グローバル: Context で十分な場合は Context。外部状態管理は必要性を精査して導入。
+- グローバル: Context または必要な場合に限り外部状態管理ライブラリ。
+- Server Components で解決できる場合はサーバー側で状態を持つ（URLSearchParams 等の活用）。
 
 ## 7. フォームとアクション
-- サーバーアクション（`'use server'`）の利用を検討。副作用はサーバーへ寄せる。
-- 従来の API ルートは `app/api/**/route.ts` で実装（`GET/POST` エクスポート）。
+- **`next/form` (GET)**: 検索やナビゲーションには `next/form` の `<Form>` を使用する。
+- **Server Actions (POST)**: 更新処理には `useActionState` と Server Actions を使用する。
+- `useFormState` は非推奨のため、必ず `useActionState` を使用すること。
+- サーバーアクション（`'use server'`）を基本とし、React 19 の `useActionState` でアクションの状態（data, pending, error）を管理する。
+
 
 ## 8. エラーハンドリング
-- `error.tsx` と `not-found.tsx` をルート直下に配置し、グローバル扱いする。
-- 例外はサーバー側で投げ、UI で適切にフォールバック（`loading.tsx` も活用）。
+- `error.tsx` と `not-found.tsx` を適切に配置。
+- `forbidden()` や `unauthorized()` (Next.js 16) を活用した認可エラーの処理。
+- `loading.tsx` や `<Suspense>` fallback を活用し、PPR に適した UI を提供する。
 
 ## 9. パフォーマンス
 - 画像は `next/image`。フォントは `next/font`。
-- クライアントバンドルを最小化（不要な `'use client'` を避ける）。
+- クライアントバンドルを最小化し、Server Components を最大限活用する。
+- `cacheComponents: true` による最適化を前提とする。
 
 ## 10. 命名・可読性
 - ディレクトリ: 機能名で明確に。
 - ファイル,コンポーネント: パスカルケース（例: `UserTable.tsx`, `UseSelectedIds.ts`）。
 
 ## 11. TypeScript
-- すべて型定義。公開 API/props は明示的な型注釈。
-- `any` は禁止。ユーティリティ型を積極活用。
- - 型の集約: プロジェクト共通の型は `types/index.ts` に集約し、各所からは同ファイル経由でインポートする。
- - 機能固有の型: `features/<feature>/domain` に配置可。共有が必要になった時点で `types/index.ts` へ移し、参照を置換する。
- - API 型: リクエスト/レスポンスの型も `types/index.ts` に定義して一元管理する。
+- すべて型定義。`any` は禁止。
+- `params`, `searchParams` の型定義は Promise 型（例: `params: Promise<{ id: string }>`）で行う。
+- 型の集約: `types/index.ts` または `features/<feature>/domain` に配置。
 
 ## 12. CSS
-- Tailwind CSS を使用し、ユーティリティクラスで構成。
-- コンポーネント外観は既存デザイン指針に従い、独自変更は承認必須。
-- `className` の合成は既定で `clsx` を使用する。
+- Tailwind CSS を使用。
+- `className` の合成には `clsx`を使用する。
 
 ## 13. ドキュメント（JSDoc）
 - 公開コンポーネント/関数/型には JSDoc を付与する。
-- 最低限含める項目: 概要、`@param`、`@returns`、必要に応じて `@remarks`、`@example`、`@throws`。
-- API ルートやサーバーアクションは副作用・例外・認可要件を明記する。
-- 複雑なドメインロジックでは「なぜこの設計か」を簡潔に説明する。
-- ファイル先頭に、そのファイルの目的が一目で分かるコメントを日本語で記載
+- ファイル先頭に日本語で目的を記載する。
 
 ---
-出典: Next.js Docs（App Router, Data Fetching, Route Handlers, Metadata 等） / React Docs（Components, Hooks, State 等）
+出典: Next.js 16 Docs (Cache Components, PPR, Async APIs, Form Component等) / React 19 Docs (Hooks, Actions等)
